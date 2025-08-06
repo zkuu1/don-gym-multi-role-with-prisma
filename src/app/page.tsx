@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div>
       
-  <Navbar/>
+    <Navbar/>
   <HeroSection />
   <Equipments />
 
