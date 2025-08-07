@@ -1,118 +1,149 @@
-'use client'
+'use client';
 
 import { useState } from "react";
-import Image from "next/image";
+import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import HeroImage from "../../images/Hero.png";
-import Link from "next/link";
-
+import GoogleSigninButton from "@/components/GoogleSigninButton";
+import GithubSigninButton from "@/components/GithubSigninButton";
 
 export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Ubah nama state
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle login logic here
+    console.log("Login attempt with:", { email, password });
+  };
 
-
-
-   return (
-    <div className="min-h-screen relative bg-black flex flex-col">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={HeroImage}
-          alt="Gym Background"
-          fill
-          className="object-cover opacity-50"
-          quality={100}
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60"></div>
-      </div>
-
-      {/* Main Content */}
-      <main className="relative z-10 flex flex-col items-center pt-20 px-4 pb-12 mt-28">
-        <div className="w-full max-w-md bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden">
-          {/* Header Section */}
-          <div className="relative h-48 bg-base_purple">
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-              <h1 className="text-4xl font-bold text-white">Welcome</h1>
-              <div className="w-16 h-1 bg-white my-3"></div>
-              <h2 className="text-2xl font-semibold text-white">Body Builder</h2>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4 mt-14">
+      <div className="max-w-6xl w-full bg-white/10 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl border border-white/20">
+        <div className="flex flex-col md:flex-row">
+          {/* Welcome Section - Left */}
+          <div className="w-full md:w-2/5 bg-gradient-to-br from-purple-700 to-indigo-900 p-10 flex flex-col justify-between">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">DON GYM FITNESS</h1>
+              <div className="w-20 h-1 bg-white mb-6"></div>
             </div>
-          </div>
-          
-          {/* Form Section */}
-          <div className="p-8">
-            <form  className="space-y-6">
-
-
-             
-    
-          
-
-             <div>
-                <label htmlFor="email" className="block text-base_purple mb-2">Email</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  className="w-full px-4 py-3 bg-gray-100 text-black rounded-lg focus:outline-none focus:ring-2 border-2 border-base_purple"
-                  placeholder="Enter your email"
-                  required
-                />
-               
-              </div>
-
-              
-             <div>
-                <label htmlFor="password" className="block text-base_purple mb-2">Password</label>
-                <div className="relative">
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    className="w-full px-4 py-3 bg-gray-100 text-black rounded-lg focus:outline-none focus:ring-2 border-2 border-base_purple pr-10"
-                    placeholder="Enter your password"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-base_purple"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEye className="h-5 w-5" /> : <FaEyeSlash className="h-5 w-5" />}
-                  </button>
-                </div>
-             
-              </div>
-
-
-              {/* Button */}
-              {/* <RegisterButton /> */}
-              
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-base_purple"></div>
-                </div>
-              </div>
-            </form>
             
-            <div className="mt-8 text-center">
-              <p className="text-gray-600">
-                Have an account?{" "}
-                <Link href="/login" className="text-base_purple font-semibold hover:text-base_semi_purple">
-                  Login
-                </Link>
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-white">Welcome</h2>
+              <h3 className="text-3xl md:text-4xl font-bold text-white">Welcome</h3>
+            </div>
+            
+            <div className="mt-8">
+              <p className="text-white/80 text-lg">
+                Transform your body, transform your life. Start your fitness journey with us today.
               </p>
             </div>
           </div>
-        </div>
-      </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 py-6 px-4 text-center text-gray-300 text-sm">
-        <p>Copyright © DON GYM FITNESS 2025. All rights reserved.</p>
-      </footer>
+          {/* Form Section - Right */}
+          <div className="w-full md:w-3/5 p-8 md:p-12 bg-white">
+            <div className="max-w-md mx-auto">
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-gray-800">Member Login</h2>
+                <p className="text-gray-600 mt-2">Sign in to access your account</p>
+              </div>
+
+               
+              <div className="relative mb-8">
+                <GoogleSigninButton />
+              </div>
+
+                 <div className="relative mb-8">
+                <GithubSigninButton/>
+              </div>
+              
+              <div className="relative mb-8">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300"></div>
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-white px-4 text-gray-500">or login with email</span>
+                </div>
+              </div>
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-50 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-300"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password</label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-50 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-300 pr-10"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    <input
+                      id="remember"
+                      type="checkbox"
+                      className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
+                      Remember me
+                    </label>
+                  </div>
+                  <a href="#" className="text-sm font-medium text-purple-600 hover:text-purple-500">
+                    Forgot password?
+                  </a>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-xl"
+                >
+                  Login
+                </button>
+              </form>
+              
+              <div className="mt-8 text-center">
+                <p className="text-gray-600">
+                  Don't have an account?{" "}
+                  <a href="/register" className="font-medium text-purple-600 hover:text-purple-500">
+                    Sign Up
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-gray-800 p-4 text-center text-gray-300 text-sm">
+          <p>Copyright © DON GYM FITNESS 2025. All rights reserved.</p>
+        </div>
+      </div>
     </div>
   );
 }

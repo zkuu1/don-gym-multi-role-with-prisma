@@ -1,6 +1,6 @@
 // components/EquipmentSection.tsx
 import Image from "next/image";
-import Treadmill from "../images/treadmill.jpg";
+import Treadmill from ".././../images/treadmill.jpg";
 
 const EquipmentSection = () => {
   const equipmentItems = [
@@ -29,36 +29,12 @@ const EquipmentSection = () => {
     },
 
       {
-      id: 5,
+      id: 4,
       name: "Treadmills",
       description: "High-performance running machines with incline options",
       image: Treadmill,
 
     },
-     {
-      id: 6,
-      name: "Treadmills",
-      description: "High-performance running machines with incline options",
-      image: Treadmill,
-
-    },
-
-       {
-      id: 7,
-      name: "Treadmills",
-      description: "High-performance running machines with incline options",
-      image: Treadmill,
-
-    },
-
-       {
-      id: 8,
-      name: "Treadmills",
-      description: "High-performance running machines with incline options",
-      image: Treadmill,
-
-    },
-
     // ... other equipment items
   ];
 

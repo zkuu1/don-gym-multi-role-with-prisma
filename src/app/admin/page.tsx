@@ -27,12 +27,46 @@ const AdminPage = async () => {
     { month: "Jun", sales: 900 },
   ];
 
+  // Recent orders with dynamic customer name from session
+
+  
   const recentOrders = [
-    { id: "#ORD-001", customer: "John Doe", date: "2023-05-01", amount: "$120.00", status: "Completed" },
-    { id: "#ORD-002", customer: "Jane Smith", date: "2023-05-02", amount: "$250.00", status: "Processing" },
-    { id: "#ORD-003", customer: "Robert Johnson", date: "2023-05-03", amount: "$75.50", status: "Completed" },
-    { id: "#ORD-004", customer: "Emily Davis", date: "2023-05-04", amount: "$430.00", status: "Shipped" },
-    { id: "#ORD-005", customer: "Michael Wilson", date: "2023-05-05", amount: "$210.00", status: "Completed" },
+    { 
+      id: session?.user?.id || "1", 
+      customer: session?.user?.name || "Guest User", 
+      membership: session?.user?.membershipId,
+      date: "2023-05-01", 
+      amount: "$120.00", 
+      status: "Completed" 
+    },
+    { 
+      id: "#ORD-002", 
+      customer: "Jane Smith", 
+      date: "2023-05-02", 
+      amount: "$250.00", 
+      status: "Processing" 
+    },
+    { 
+      id: "#ORD-003", 
+      customer: "Robert Johnson", 
+      date: "2023-05-03", 
+      amount: "$75.50", 
+      status: "Completed" 
+    },
+    { 
+      id: "#ORD-004", 
+      customer: "Emily Davis", 
+      date: "2023-05-04", 
+      amount: "$430.00", 
+      status: "Shipped" 
+    },
+    { 
+      id: "#ORD-005", 
+      customer: "Michael Wilson", 
+      date: "2023-05-05", 
+      amount: "$210.00", 
+      status: "Completed" 
+    },
   ];
 
   return (
@@ -84,8 +118,27 @@ const AdminPage = async () => {
             <h2 className="text-xl font-semibold text-gray-800">Dashboard</h2>
             
             {/* Profile Dropdown */}
-            <div className="relative">
-             
+            <div className="relative group">
+              <div className="flex items-center space-x-2 cursor-pointer">
+                {session?.user?.image ? (
+                  <Image 
+                    src={session.user.image} 
+                    alt="User profile" 
+                    width={32} 
+                    height={32} 
+                    className="rounded-full"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                    <span className="text-sm text-gray-600">
+                      {session?.user?.name?.charAt(0) || 'U'}
+                    </span>
+                  </div>
+                )}
+                <span className="text-sm font-medium text-gray-700">
+                  {session?.user?.name || 'User'}
+                </span>
+              </div>
               
               {/* Dropdown Menu */}
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
@@ -99,6 +152,14 @@ const AdminPage = async () => {
 
         {/* Dashboard Content */}
         <main className="p-6">
+          {/* Welcome Message with User Name */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">
+              Welcome back, {session?.user?.name || 'Admin'}!
+            </h1>
+            <p className="text-gray-600">Here's what's happening with your business today.</p>
+          </div>
+
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             {stats.map((stat, index) => (
@@ -173,6 +234,9 @@ const AdminPage = async () => {
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             <div className="p-6 border-b">
               <h3 className="text-lg font-semibold text-gray-800">Recent Orders</h3>
+              <p className="text-sm text-gray-500 mt-1">
+                Showing orders for {session?.user?.name || 'your account'}
+              </p>
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">

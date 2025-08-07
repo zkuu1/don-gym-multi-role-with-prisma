@@ -14,7 +14,7 @@ const Appbar = () => {
   const isAdmin = session?.user?.role === 'admin';
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-base_purple py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
+    <header className="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md bg-base_purple opacity-75 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
       <div className="px-4">
         <div className="flex items-center justify-between">
           {/* Hamburger menu for mobile */}
@@ -191,7 +191,7 @@ const Appbar = () => {
                   <span className="text-white font-medium hidden sm:inline">
                     {session.user?.name}
                   </span>
-                  <div className="h-8 w-8 rounded-full overflow-hidden border-2 border-white">
+                  <div className="h-8 w-8 rounded-full overflow-hidden ">
                     <Image
                       src={session.user?.image || "/default-avatar.png"}
                       alt={session.user?.name || "User avatar"}

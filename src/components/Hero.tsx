@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import hero from "../images/Hero.png";
 
+
+
+
 const HeroSection = () => {
   const navItems = [
     { name: "Home", href: "#" },
@@ -10,6 +13,8 @@ const HeroSection = () => {
     { name: "Trentang Kamal", href: "#" },
     { name: "Pricing", href: "#" },
   ];
+
+  
 
   return (
     <div className="relative min-h-screen bg-black">

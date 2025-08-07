@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Appbar from "@/components/Appbar";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="min-h-screen flex flex-col">
           <Providers>
             <Appbar />
+
             {children}
+
+            <Footer />
           </Providers>
         </div>
       </body>
