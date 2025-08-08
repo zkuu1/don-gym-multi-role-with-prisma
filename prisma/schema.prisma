@@ -1,13 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("PRISMA_DATABASE_URL")
 }
 
 model Account {
@@ -16,15 +13,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -38,17 +34,17 @@ model Session {
 }
 
 model User {
-  id              String     @id @default(cuid())
-  name            String?
-  email           String?    @unique
-  password        String?
-  emailVerified   DateTime?
-  image           String?
-  role            String?    @default("user")
-  membershipId    String?
-  membership      Membership?
-  accounts        Account[]
-  sessions        Session[]
+  id            String      @id @default(cuid())
+  name          String?
+  email         String?     @unique
+  emailVerified DateTime?
+  image         String?
+  role          String?     @default("user")
+  membershipId  String?
+  password      String?
+  accounts      Account[]
+  membership    Membership?
+  sessions      Session[]
 }
 
 model VerificationToken {
@@ -61,10 +57,10 @@ model VerificationToken {
 
 model Membership {
   id        String   @id @default(cuid())
+  endDate   DateTime
+  startDate DateTime
+  status    String
+  type      String
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
-  status    String   // active, expired, pending, dll
-  type      String   // premium, basic, pro
-  startDate DateTime
-  endDate   DateTime
 }

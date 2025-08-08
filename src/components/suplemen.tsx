@@ -41,7 +41,7 @@ const SuplemenSection = () => {
   return (
     <section className="py-20 bg-black">
       {/* Main container with controlled width and padding */}
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 ">
         {/* Section Title */}
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-bold uppercase text-white">
