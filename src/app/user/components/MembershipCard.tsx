@@ -8,21 +8,17 @@ interface MembershipCardProps {
 
 const MembershipCard: React.FC<MembershipCardProps> = ({ membership }) => {
   const getStatusColor = () => {
-    switch (membership?.status?.toLowerCase()) {
-      case "active":
-        return "bg-green-100 text-green-800";
-      case "expired":
-        return "bg-red-100 text-red-800";
-      case "pending":
-        return "bg-yellow-100 text-yellow-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
+    const status = membership?.status?.toLowerCase();
+    if (status === "active") return "bg-green-100 text-green-800";
+    if (status === "expired") return "bg-red-100 text-red-800";
+    if (status === "pending") return "bg-yellow-100 text-yellow-800";
+    return "bg-gray-100 text-gray-800";
   };
 
-  const formatDate = (date: Date | null) => {
+  const formatDate = (date: Date | string | null) => {
     if (!date) return "-";
-    return new Date(date).toLocaleDateString("id-ID", {
+    const parsedDate = date instanceof Date ? date : new Date(date);
+    return parsedDate.toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -32,9 +28,11 @@ const MembershipCard: React.FC<MembershipCardProps> = ({ membership }) => {
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900">Status Membership</h2>
+        <h2 className="text-xl font-semibold text-gray-900">
+          Status Membership
+        </h2>
       </div>
-      
+
       <div className="p-6">
         {membership ? (
           <>
@@ -45,22 +43,27 @@ const MembershipCard: React.FC<MembershipCardProps> = ({ membership }) => {
                   {membership.type || "Tidak tersedia"}
                 </p>
               </div>
-              
+
               <span
                 className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${getStatusColor()}`}
               >
-                {membership.status}
+                {membership.status || "unknown"}
               </span>
             </div>
 
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <p className="text-gray-600">Tanggal Mulai</p>
-                <p className="font-medium">{formatDate(membership.startDate)}</p>
+                <p className="font-medium">
+                  {formatDate(membership.startDate)}
+                </p>
               </div>
               <div>
                 <p className="text-gray-600">Tanggal Berakhir</p>
-                <p className="font-medium">{formatDate(membership.endDate)}</p>
+                <p className="font-medium">
+                  {formatDate(membership.endDate)}
+                  
+                </p>
               </div>
             </div>
 
@@ -69,8 +72,8 @@ const MembershipCard: React.FC<MembershipCardProps> = ({ membership }) => {
                 href="/upgrade"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                {membership.status === "active" 
-                  ? "Upgrade Membership" 
+                {membership.status?.toLowerCase() === "active"
+                  ? "Upgrade Membership"
                   : "Aktifkan Membership"}
               </Link>
             </div>

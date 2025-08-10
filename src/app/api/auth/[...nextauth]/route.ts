@@ -24,7 +24,6 @@ export const authOptions: AuthOptions = {
         };
       },
     }),
-
     Github({
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
@@ -36,21 +35,36 @@ export const authOptions: AuthOptions = {
           image: profile.avatar_url,
           role: profile.role ? profile.role : "user",
         };
-      }
+      },
     }),
   ],
   pages: {
-     signIn: "/auth/google-login", 
+    signIn: "/auth/google-login",
+    signOut: "/login/page",
   },
-
   callbacks: {
     async jwt({ token, user }) {
       return { ...token, ...user };
     },
     async session({ session, token }) {
-       session.user.id = token.id as string; 
+      session.user.id = token.id as string;
       session.user.role = token.role;
       return session;
+    },
+  },
+
+  events: {
+    async createUser(message) {
+      // message.user = user baru yang dibuat
+      await prisma.membership.create({
+        data: {
+          userId: message.user.id, // relasi ke User
+          startDate: new Date(),
+          endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // 1 tahun
+          status: "nonaktif",
+          type: "basic",
+        },
+      });
     },
   },
 };

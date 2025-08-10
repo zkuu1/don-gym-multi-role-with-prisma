@@ -1,6 +1,8 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Image from "next/image";
+import prisma from "@/lib/prisma";
+import Statistic from "@/components/statistic";
 
 const AdminPage = async () => {
   const session = await getServerSession(authOptions);
@@ -161,22 +163,13 @@ const AdminPage = async () => {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {stats.map((stat, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-sm font-medium text-gray-500">{stat.title}</h3>
-                <p className="text-xs text-gray-400 mb-2">{stat.description}</p>
-                <div className="flex items-center justify-between">
-                  <p className="text-2xl font-semibold text-gray-800">{stat.value}</p>
-                  {stat.change && (
-                    <span className={`text-sm ${stat.changeColor || "text-gray-500"}`}>
-                      {stat.change}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div className="col-span-full">
+            <Statistic />
           </div>
+        </div>
+
+
 
           {/* Customer Stats and Sales Chart */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">

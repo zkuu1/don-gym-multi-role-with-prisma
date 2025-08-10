@@ -18,15 +18,6 @@ export default function GithubLoginPage() {
         <span className="font-medium">Sign in with GitHub</span>
       </button>
 
-      <p className="mt-6">
-        Mau login dengan Google?{" "}
-        <a
-          href="/auth/google-login"
-          className="underline hover:text-gray-300"
-        >
-          Klik di sini
-        </a>
-      </p>
     </div>
   );
 }

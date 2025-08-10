@@ -8,31 +8,34 @@ import MembershipCard from "./components/MembershipCard";
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
-  // Pastikan session dan user.id tersedia
+  // Cek apakah user sudah login
   if (!session?.user?.id) {
     redirect("/login");
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      include: {
-        membership: true,
-      },
-    });
+      const user = await prisma.user.findUnique({
+  where: { id: session.user.id },
+  include: {
+    membership: true, // Ambil semua field Membership
+  },
+});
+
 
     if (!user) {
       redirect("/login");
     }
 
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 ">
+      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white shadow rounded-lg p-6 mb-8 mt-28">
             <h1 className="text-3xl font-bold text-gray-900">
               Selamat datang, {user.name || "Pengguna"}!
             </h1>
           </div>
+
+          {/* Kirim data membership ke komponen */}
           <MembershipCard membership={user.membership} />
         </div>
       </div>
