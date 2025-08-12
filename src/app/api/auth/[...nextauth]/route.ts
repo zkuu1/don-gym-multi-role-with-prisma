@@ -59,10 +59,11 @@ export const authOptions: AuthOptions = {
       await prisma.membership.create({
         data: {
           userId: message.user.id, // relasi ke User
+          id: message.user.id, // ID yang sama dengan User
           startDate: new Date(),
           endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // 1 tahun
           status: "nonaktif",
-          type: "basic",
+          type: "non membership",
         },
       });
     },

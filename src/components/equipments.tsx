@@ -67,7 +67,7 @@ const cardVariants: Variants = {
 const equipmentItems = [
   {
     id: 1,
-    name: "Treadmill",
+    name: "Cable Row",
     description: "High-performance running machine",
     image: Treadmill,
   },
@@ -75,21 +75,45 @@ const equipmentItems = [
     id: 2,
     name: "Dumbbells",
     description: "Adjustable weight set",
-    image: "/dumbbells.jpg",
+    image: Treadmill,
   },
   {
     id: 3,
-    name: "Exercise Bike",
+    name: "treadmill",
     description: "Cardio cycling machine",
-    image: "/exercise-bike.jpg",
+   image: Treadmill,
   },
   {
     id: 4,
-    name: "Yoga Mat",
+    name: "Bench Press",
     description: "Non-slip premium mat",
-    image: "/yoga-mat.jpg",
+     image: Treadmill,
   },
+  {
+     id: 5,
+    name: "Cable Pulldown",
+    description: "High-performance running machine",
+    image: Treadmill,
+  },
+  {
+    id: 6,
+    name: "Butterfly Machine",
+    description: "Adjustable weight set",
+    image: Treadmill,
+  },
+  {
+    id: 7,
+    name: "Lat Pulldown",
+    description: "Cardio cycling machine",
+   image: Treadmill,
+  },
+  {
+    id: 8,
+    name: "High row machine",
+    description: "Non-slip premium mat",
+     image: Treadmill,
   // Add more items as needed
+  }
 ];
 
 export default function FitnessEquipment() {

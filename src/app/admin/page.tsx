@@ -2,7 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Image from "next/image";
 import prisma from "@/lib/prisma";
-import Statistic from "@/components/statistic";
+import Statistic from "@/components/Statistic";
+import Create from "./actions/Create";
 
 const AdminPage = async () => {
   const session = await getServerSession(authOptions);
@@ -156,6 +157,7 @@ const AdminPage = async () => {
         <main className="p-6">
           {/* Welcome Message with User Name */}
           <div className="mb-6">
+            
             <h1 className="text-2xl font-bold text-gray-800">
               Welcome back, {session?.user?.name || 'Admin'}!
             </h1>

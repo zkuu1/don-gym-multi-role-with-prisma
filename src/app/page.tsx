@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Navbar from "../components/Appbar";
 import HeroSection from "@/components/Hero";
-import Equipments from "@/components/equipments";
-import BestForSection from "@/components/bestFor";
-import FindUsSection from "@/components/findUs";
+import Equipments from "@/components/Equipments";
+import BestForSection from "@/components/BestFor";
+import FindUsSection from "@/components/FindUs";
 
 
 

@@ -1,93 +1,70 @@
-// components/EquipmentSection.tsx
-import Image from "next/image";
-import Treadmill from "../images/treadmill.jpg";
+// components/CategorySection.tsx
+import { FaUsers, FaImages, FaPills, FaQuestionCircle } from "react-icons/fa";
 
-const SuplemenSection = () => {
-  const equipmentItems = [
+const CategorySection = () => {
+  const categories = [
     {
       id: 1,
-      name: "Treadmills",
-      description: "High-performance running machines with incline options",
-      image: Treadmill,
-
+      name: "Member",
+      icon: <FaUsers className="text-5xl" />,
     },
-
-       {
+    {
       id: 2,
-      name: "Treadmills",
-      description: "High-performance running machines with incline options",
-      image: Treadmill,
-
+      name: "Gallery",
+      icon: <FaImages className="text-5xl" />,
     },
-
-       {
+    {
       id: 3,
-      name: "Treadmills",
-      description: "High-performance running machines with incline options",
-      image: Treadmill,
-
+      name: "Supplement",
+      icon: <FaPills className="text-5xl" />,
     },
-
-      {
+    {
       id: 4,
-      name: "Treadmills",
-      description: "High-performance running machines with incline options",
-      image: Treadmill,
-
+      name: "Question",
+      icon: <FaQuestionCircle className="text-5xl" />,
     },
-    // ... other equipment items
   ];
 
   return (
-    <section className="py-20 bg-black">
-      {/* Main container with controlled width and padding */}
-      <div className="container mx-auto px-4 ">
-        {/* Section Title */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-bold uppercase text-white">
-            Fit<span className="text-base_purple">ness</span>
+    <section className="py-16 bg-black mt-20">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold uppercase text-white">
+            <span className="text-base_purple">K</span>ATEGORI
           </h2>
-          <h2 className="text-5xl md:text-6xl font-bold uppercase text-white mt-2">
-            Equipment
-          </h2>
-          <div className="w-24 h-1 bg-base_purple mx-auto mt-6"></div>
+          <div className="w-20 h-1 bg-base_purple mx-auto mt-4"></div>
         </div>
 
-        {/* Equipment Grid with proper spacing */}
-        <div className="relative border-2 border-base_purple rounded-xl p-6 shadow-lg">
-          {/* Purple glow effect */}
-          <div className="absolute inset-0 rounded-xl ring-4 ring-base_purple/30 ring-inset pointer-events-none"></div>
+        <div className="relative border-2 border-base_purple rounded-xl p-4 shadow-lg max-w-3xl mx-auto">
+          <div className="absolute inset-0 rounded-xl ring-2 ring-base_purple/30 ring-inset pointer-events-none"></div>
           
-          {/* Grid with safe spacing */}
-         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {equipmentItems.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 border-white"
+          {/* Grid dengan ikon diperbesar dan judul di bawah */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+            {categories.map((category) => (
+              <div 
+                key={category.id} 
+                className="flex flex-col items-center"
               >
-                <div className="relative h-40 sm:h-56">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="transition-transform duration-500 hover:scale-105"
-                  />
+                {/* Kotak ikon */}
+                <div className="group relative aspect-square w-full bg-white rounded-lg overflow-hidden transition-all duration-300 transform hover:scale-105 hover:bg-base_purple border border-white">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-2">
+                    <div className="text-base_purple mb-2 group-hover:text-white transition-colors">
+                      {category.icon}
+                    </div>
+                  </div>
                 </div>
-                <div className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-1 sm:mb-2">
-                    {item.name}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-600">{item.description}</p>
-                </div>
+                
+                {/* Judul di bawah kotak */}
+                <h3 className="mt-4 text-xl font-bold text-white uppercase tracking-wider text-center">
+                  {category.name}
+                </h3>
               </div>
             ))}
-        </div>
-
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-export default SuplemenSection;
+export default CategorySection;
