@@ -2,6 +2,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../app/api/auth/[...nextauth]/route";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import Search from "./Search";
+import { CreateButton, EditButton } from "./Button";
+
+import { getUsers } from "@/lib/data";
 
 const Statistic = async () => {
   const session = await getServerSession(authOptions);
@@ -14,21 +18,9 @@ const Statistic = async () => {
     return <div className="p-6 text-red-600 font-semibold">Unauthorized</div>;
   }
 
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      membershipId: true,
-      membership: {
-        select: {
-          startDate: true,
-          endDate: true,
-          status: true,
-        },
-      },
-    },
-  });
-
+  
+  // Mapping users to a format suitable for the table
+  const users = await getUsers();
   const recentOrders = users.map((u) => ({
     id: u.id,
     customer: u.name ?? "Unknown",
@@ -48,6 +40,11 @@ const Statistic = async () => {
         <p className="text-sm text-gray-500">
           Overview of registered users and memberships
         </p>
+        <CreateButton />
+        <div className="mt-4">
+          <Search />
+        </div>
+        
       </div>
 
       {/* Table */}
@@ -74,10 +71,7 @@ const Statistic = async () => {
                 Membership Status
               </th>
               <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
-                Amount
-              </th>
-              <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
-                Order Status
+                Action
               </th>
             </tr>
           </thead>
@@ -106,7 +100,9 @@ const Statistic = async () => {
                     ? new Date(order.endDate).toLocaleDateString()
                     : "-"}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+               
+                
+                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       order.membershipStatus === "active"
@@ -117,20 +113,11 @@ const Statistic = async () => {
                     {order.membershipStatus}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-gray-600">
-                  {order.amount}
+
+                <td>
+                 <EditButton id={order.id} />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      order.status === "Completed"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {order.status}
-                  </span>
-                </td>
+
               </tr>
             ))}
           </tbody>

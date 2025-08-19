@@ -42,6 +42,8 @@ model User {
   role          String?     @default("user")
   membershipId  String?
   password      String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   accounts      Account[]
   membership    Membership?
   sessions      Session[]
