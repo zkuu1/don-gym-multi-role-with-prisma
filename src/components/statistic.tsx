@@ -3,7 +3,7 @@ import { authOptions } from "../app/api/auth/[...nextauth]/route";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Search from "./Search";
-import { CreateButton, EditButton } from "./Button";
+import { CreateButton, EditButton, DeleteButton } from "./Button";
 
 import { getUsers } from "@/lib/data";
 
@@ -24,6 +24,7 @@ const Statistic = async () => {
   const recentOrders = users.map((u) => ({
     id: u.id,
     customer: u.name ?? "Unknown",
+    role: u.role ?? "Unkwown",
     membershipId: u.membershipId ?? "-",
     startDate: u.membership?.startDate || null,
     endDate: u.membership?.endDate || null,
@@ -58,6 +59,9 @@ const Statistic = async () => {
               <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                 Customer
               </th>
+               <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
+                Role
+              </th>
               <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                 Membership ID
               </th>
@@ -73,6 +77,7 @@ const Statistic = async () => {
               <th className="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                 Action
               </th>
+              
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -86,6 +91,9 @@ const Statistic = async () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                   {order.customer}
+                </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                  {order.role}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                   {order.membershipId}
@@ -116,6 +124,7 @@ const Statistic = async () => {
 
                 <td>
                  <EditButton id={order.id} />
+                 <DeleteButton id={order.id}/>
                 </td>
 
               </tr>

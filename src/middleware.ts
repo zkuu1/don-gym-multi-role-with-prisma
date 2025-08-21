@@ -11,6 +11,10 @@ export default withAuth(
       return NextResponse.redirect(new URL("/not-found", req.url));
     }
 
+      if (pathname.startsWith("/api") && token?.role !== "admin") {
+      return NextResponse.redirect(new URL("/not-found", req.url));
+    }
+
     return NextResponse.next();
   },
   {
@@ -21,5 +25,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/admin/:path*", "/profile"],
+  matcher: ["/admin/:path*", "/api/:path*", "/profile"],
 };

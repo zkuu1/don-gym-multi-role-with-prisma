@@ -7,6 +7,7 @@ export async function getUsers() {
       id: true,
       name: true,
       membershipId: true,
+      role: true,
       membership: {
         select: {
           startDate: true,
@@ -24,6 +25,7 @@ export async function getUserById(id: string) {
     select: {
       id: true,
       name: true,
+      role: true,
       membershipId: true,
       membership: {
         select: {

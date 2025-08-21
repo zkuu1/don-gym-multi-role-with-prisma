@@ -1,29 +1,34 @@
 import { getUserById } from "@/lib/data";
 import EditForm from "@/components/Edit-form";
 
-interface Props {
-  params: { id: string };
-}
-
-export default async function EditUserPage({ params }: Props) {
+export default async function EditPage({ params }: { params: { id: string } }) {
   const user = await getUserById(params.id);
 
   if (!user) {
-    return <div>User tidak ditemukan</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white text-white">
+        <p>User tidak ditemukan</p>
+      </div>
+    );
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Edit User</h1>
-      <EditForm
-        user={{
-          id: user.id,
-          name: user.name ?? "",
-          membership: user.membership
-            ? { status: user.membership.status }
-            : undefined,
-        }}
-      />
-    </div>
+    <EditForm
+      user={{
+        ...user,
+        membership: user.membership
+          ? {
+              ...user.membership,
+              startDate: user.membership.startDate
+                ? user.membership.startDate.toISOString()
+                : null,
+              endDate: user.membership.endDate
+                ? user.membership.endDate.toISOString()
+                : null,
+              status: user.membership.status ?? null,
+            }
+          : null,
+      }}
+    />
   );
 }

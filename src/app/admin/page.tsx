@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Image from "next/image";
 import prisma from "@/lib/prisma";
-import Statistic from "@/components/Statistic";
+import Statistic from "@/components/statistic";
 
 
 const AdminPage = async () => {
