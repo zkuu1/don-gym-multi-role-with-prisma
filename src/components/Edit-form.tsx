@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type EditFormProps = {
   user: {
@@ -14,7 +16,6 @@ type EditFormProps = {
       status: string | null;
       startDate: string | null;
       endDate: string | null;
-      
     } | null;
   };
 };
@@ -31,7 +32,6 @@ type FormValues = {
 export default function EditForm({ user }: EditFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
     defaultValues: {
@@ -39,12 +39,13 @@ export default function EditForm({ user }: EditFormProps) {
       status: user.membership?.status ?? "",
       role: user.role ?? "",
       membershipId: user.membershipId ?? "",
+      startDate: user.membership?.startDate ?? "",
+      endDate: user.membership?.endDate ?? "",
     },
   });
 
   async function onSubmit(data: FormValues) {
     setLoading(true);
-    setError("");
 
     try {
       const res = await fetch(`/api/admin/edit/${user.id}`, {
@@ -61,10 +62,15 @@ export default function EditForm({ user }: EditFormProps) {
         throw new Error(result.message || "Gagal update user");
       }
 
-      router.push("/admin");
-      router.refresh();
+      toast.success("User berhasil diupdate!");
+      
+      setTimeout(() => {
+        router.push("/admin");
+        router.refresh();
+      }, 1500);
+
     } catch (err: any) {
-      setError(err.message || "Terjadi kesalahan");
+      toast.error(err.message || "Terjadi kesalahan");
     } finally {
       setLoading(false);
     }
@@ -72,6 +78,19 @@ export default function EditForm({ user }: EditFormProps) {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-6">
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-base_semi_purple shadow-xl rounded-2xl p-8 w-full max-w-md space-y-6"
@@ -79,12 +98,6 @@ export default function EditForm({ user }: EditFormProps) {
         <h2 className="text-2xl font-bold text-center text-white">
           Edit User
         </h2>
-
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-            {error}
-          </div>
-        )}
 
         {/* Name */}
         <div>
@@ -132,34 +145,34 @@ export default function EditForm({ user }: EditFormProps) {
 
         {/* Membership ID */}
         <div>
+          <label className="block font-medium text-white">Membership ID</label>
+          <input
+            {...register("membershipId")}
+            placeholder="Masukkan ID Membership"
+            className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            type="number"
+            inputMode="numeric"
+          />
+        </div>
+
+        {/* Start Date */}
+        <div>
           <label className="block font-medium text-white">Tanggal Mulai</label>
           <input
             {...register("startDate")}
-            placeholder={user.membership?.startDate ??  "Masukkan Tanggal Mulai"}
             className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
             type="date"
-            inputMode="numeric"
           />
-          {errors.startDate && (
-            <p className="text-red-500 text-sm mt-1">{errors.startDate.message}</p>
-          )}
         </div>
 
-        
-
-         {/* Membership ID */}
+        {/* End Date */}
         <div>
           <label className="block font-medium text-white">Tanggal Selesai</label>
           <input
             {...register("endDate")}
-            placeholder={user.membership?.endDate ??  "Masukkan Tanggal Selesai"}
             className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
             type="date"
-            inputMode="numeric"
           />
-          {errors.endDate && (
-            <p className="text-red-500 text-sm mt-1">{errors.endDate.message}</p>
-          )}
         </div>
 
         {/* Action Buttons */}

@@ -4,6 +4,8 @@ import Link from "next/link"
 import { IoAddSharp, IoPencil, IoTrash } from "react-icons/io5"
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const CreateButton = () => {
   return (
@@ -42,13 +44,15 @@ export const DeleteButton = ({ id }: { id: string }) => {
       });
 
       if (response.ok) {
-        // Refresh halaman setelah berhasil delete
-        router.refresh();
+        toast.success("User berhasil dihapus!");
+        setTimeout(() => {
+          router.refresh();
+        }, 1500);
       } else {
-        console.error("Gagal menghapus user");
+        toast.error("Gagal menghapus user");
       }
     } catch (error) {
-      console.error("Error:", error);
+      toast.error("Terjadi kesalahan jaringan");
     } finally {
       setIsDeleting(false);
       setShowModal(false);
@@ -94,6 +98,19 @@ export const DeleteButton = ({ id }: { id: string }) => {
           </div>
         </div>
       )}
+
+      {/* Toast Container */}
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 };

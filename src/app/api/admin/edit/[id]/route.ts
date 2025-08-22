@@ -100,25 +100,3 @@ export async function PUT(
   }
 }
 
-// DELETE untuk menghapus user
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  try {
-    await prisma.user.delete({
-      where: { id: params.id },
-    });
-
-    return NextResponse.json(
-      { message: "User berhasil dihapus" },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Delete error:", error);
-    return NextResponse.json(
-      { message: "Gagal menghapus user" },
-      { status: 500 }
-    );
-  }
-}
