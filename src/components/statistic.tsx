@@ -41,7 +41,9 @@ const Statistic = async () => {
         <p className="text-sm text-gray-500">
           Overview of registered users and memberships
         </p>
-        <CreateButton />
+        <div className="mt-4">
+          <CreateButton />
+        </div>
         <div className="mt-4">
           <Search />
         </div>

@@ -1,3 +1,4 @@
+// middleware.ts
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
@@ -6,24 +7,24 @@ export default withAuth(
     const { pathname } = req.nextUrl;
     const token = req.nextauth.token;
 
- 
-    if (pathname.startsWith("/admin") && token?.role !== "admin") {
-      return NextResponse.redirect(new URL("/not-found", req.url));
-    }
-
-      if (pathname.startsWith("/api") && token?.role !== "admin") {
-      return NextResponse.redirect(new URL("/not-found", req.url));
+    // Cek akses ke halaman /admin dan /api
+    if (pathname.startsWith("/admin") || pathname.startsWith("/api")) {
+      // Belum login atau bukan admin
+      if (!token || token.role !== "admin") {
+        return NextResponse.redirect(new URL("/not-found", req.url));
+      }
     }
 
     return NextResponse.next();
   },
   {
     callbacks: {
-      authorized: ({ token }) => !!token, 
+      // Selalu true → biar NextAuth gak redirect otomatis ke /auth/signin
+      authorized: () => true,
     },
   }
 );
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/:path*", "/profile"],
+  matcher: ["/admin/:path*", "/api/:path*"],
 };

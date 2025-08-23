@@ -44,33 +44,38 @@ const BestForSection = () => {
         </div>
 
         {/* Equipment Grid with proper spacing */}
-        <div className="relative border-2 border-base_purple rounded-xl p-6 shadow-lg">
-          <div className="absolute inset-0 rounded-xl ring-4 ring-base_purple/30 ring-inset pointer-events-none">
+      <div className="relative border-2 border-base_purple rounded-xl p-6 shadow-lg">
+          <div className="absolute inset-0 rounded-xl ring-4 ring-base_purple/30 ring-inset pointer-events-none"></div>
+
+          {/* Wrapper */}
+          <div
+            className="
+              flex gap-4 overflow-x-auto scrollbar-hide
+              md:grid md:grid-cols-3 md:gap-6 md:overflow-x-visible
+            "
+          >
+            {equipmentItems.map((item) => (
+              <div
+                key={item.id}
+                className="min-w-[250px] md:min-w-0 bg-base_purple rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 border-white"
+              >
+                <div className="relative h-6 sm:h-10 md:h-12 bg-base_purple" />
+                <div className="p-3 sm:p-4 md:p-6">
+                  <h3 className="text-xl sm:text-3xl md:text-5xl font-bold text-cyan-300 mb-1 sm:mb-2 md:mb-4">
+                    {item.title}
+                  </h3>
+                  <h2 className="text-base sm:text-xl md:text-2xl text-white font-bold mb-1">
+                    {item.subtitle}
+                  </h2>
+                  <p className="text-sm sm:text-base text-white">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-            
-          
-         <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-                {equipmentItems.map((item) => (
-                    <div
-                    key={item.id}
-                    className="bg-base_purple rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 border-white"
-                    >
-                    <div className="relative h-6 sm:h-10 md:h-12 bg-base_purple" />
-                    <div className="p-3 sm:p-4 md:p-6">
-                        <h3 className="text-xl sm:text-3xl md:text-5xl font-bold text-cyan-300 mb-1 sm:mb-2 md:mb-4">
-                        {item.title}
-                        </h3>
-                        <h2 className="text-base sm:text-xl md:text-2xl text-white font-bold mb-1">
-                        {item.subtitle}
-                        </h2>
-                        <p className="text-sm sm:text-base text-white">
-                        {item.description}
-                        </p>
-                    </div>
-                    </div>
-                ))}
-            </div>
-        </div>
+    </div>
+
       </div>
     </section>
   );

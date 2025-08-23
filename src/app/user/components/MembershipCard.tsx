@@ -26,9 +26,9 @@ const MembershipCard: React.FC<MembershipCardProps> = ({ membership }) => {
   };
 
   return (
-    <div className="bg-white shadow rounded-lg overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900">
+    <div className="bg-base_purple shadow rounded-lg overflow-hidden">
+      <div className="px-6 py-4 border-b border-white">
+        <h2 className="text-xl font-semibold text-white">
           Status Membership
         </h2>
       </div>
@@ -38,28 +38,24 @@ const MembershipCard: React.FC<MembershipCardProps> = ({ membership }) => {
           <>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600">Tipe Membership</p>
-                <p className="text-2xl font-bold text-indigo-600 capitalize">
-                  {membership.type || "Tidak tersedia"}
+                <p className="text-white">Status Membership</p>
+                <p className="text-2xl font-bold text-cyan-300 capitalize">
+                  {membership.status || "Tidak tersedia"}
                 </p>
               </div>
 
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${getStatusColor()}`}
-              >
-                {membership.status || "unknown"}
-              </span>
+            
             </div>
 
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="text-gray-600">Tanggal Mulai</p>
+                <p className="text-white">Tanggal Mulai</p>
                 <p className="font-medium">
                   {formatDate(membership.startDate)}
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">Tanggal Berakhir</p>
+                <p className="text-white">Tanggal Berakhir</p>
                 <p className="font-medium">
                   {formatDate(membership.endDate)}
                   
@@ -70,7 +66,7 @@ const MembershipCard: React.FC<MembershipCardProps> = ({ membership }) => {
             <div className="mt-8">
               <Link
                 href="/upgrade"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-base_purple bg-white hover:bg-purple-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
               >
                 {membership.status?.toLowerCase() === "active"
                   ? "Upgrade Membership"
@@ -96,7 +92,7 @@ const MembershipCard: React.FC<MembershipCardProps> = ({ membership }) => {
             <h3 className="mt-2 text-sm font-medium text-gray-900">
               Belum memiliki membership
             </h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-white">
               Dapatkan akses penuh dengan berlangganan membership
             </p>
             <div className="mt-6">

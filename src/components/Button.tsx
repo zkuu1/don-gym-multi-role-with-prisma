@@ -5,13 +5,21 @@ import { IoAddSharp, IoPencil, IoTrash } from "react-icons/io5"
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { signOut } from "next-auth/react";
 import "react-toastify/dist/ReactToastify.css";
+
+export const LogoutButton = () => {
+    return (
+      <button onClick={() => signOut()} className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded">Logout Account</button>
+    )
+    
+  }
 
 export const CreateButton = () => {
   return (
     <Link
       href="/admin/create"
-      className="inline-flex items-center space-x-1 text-white bg-base_purple hover:bg-base_semi_purple px-5 py-[9px] rounded-sm text-sm"
+      className="inline-flex items-center space-x-1 text-white bg-base_purple hover:bg-base_semi_purple px-5 py-[9px] rounded-lg text-sm"
     >
       <IoAddSharp size={20} className="h-4 w-4" />
       Create User

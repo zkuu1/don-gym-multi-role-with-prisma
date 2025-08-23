@@ -1,8 +1,12 @@
+
+
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Image from "next/image";
 import prisma from "@/lib/prisma";
 import Statistic from "@/components/statistic";
+import { signOut } from "next-auth/react";
+import { LogoutButton } from "@/components/Button";
 
 
 const AdminPage = async () => {
@@ -82,12 +86,13 @@ const AdminPage = async () => {
 
         <nav className="p-4">
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-700 mb-2">Tailwind</h2>
+            <h2 className="text-lg font-semibold text-gray-700 mb-2">Quick Menu</h2>
             <ul className="space-y-1">
-              <li><a href="#" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Figma</a></li>
-              <li><a href="#" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">React</a></li>
-              <li><a href="#" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Next</a></li>
-              <li><a href="#" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Vue</a></li>
+              <li><a href="/" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Home</a></li>
+              <li><a href="/muscle" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Hit The Muscle</a></li>
+              <li><a href="/about" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Tentang Kami</a></li>
+              <li><a href="/pricing" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Pricing</a></li>
+              <li><a href="/admin" className="block px-3 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded">Admin</a></li>
             </ul>
           </div>
 
@@ -95,7 +100,7 @@ const AdminPage = async () => {
             <h2 className="text-lg font-semibold text-gray-700 mb-2">Don Gym Admin</h2>
             <ul className="space-y-1">
               <li>
-                <a href="#" className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded">Dashboard</a>
+                <a href="#" className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded bg-gray-100">Dashboard</a>
               </li>
               <li>
                 <a href="#" className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded">Economies</a>
@@ -106,8 +111,7 @@ const AdminPage = async () => {
           <div>
             <h2 className="text-lg font-semibold text-gray-700 mb-2">User Profile</h2>
             <ul className="space-y-1">
-              <li><a href="#" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Task</a></li>
-              <li><a href="#" className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Forms</a></li>
+             <LogoutButton />
             </ul>
           </div>
         </nav>
@@ -118,38 +122,6 @@ const AdminPage = async () => {
         {/* Header */}
         <header className="bg-gray-100 shadow-sm">
           <div className="flex justify-between items-center px-6 py-4">
-            <h2 className="text-xl font-semibold text-gray-800">Dashboard</h2>
-            
-            {/* Profile Dropdown */}
-            <div className="relative group">
-              <div className="flex items-center space-x-2 cursor-pointer">
-                {session?.user?.image ? (
-                  <Image 
-                    src={session.user.image} 
-                    alt="User profile" 
-                    width={32} 
-                    height={32} 
-                    className="rounded-full"
-                  />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
-                    <span className="text-sm text-gray-600">
-                      {session?.user?.name?.charAt(0) || 'U'}
-                    </span>
-                  </div>
-                )}
-                <span className="text-sm font-medium text-gray-700">
-                  {session?.user?.name || 'User'}
-                </span>
-              </div>
-              
-              {/* Dropdown Menu */}
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
-              </div>
-            </div>
           </div>
         </header>
 

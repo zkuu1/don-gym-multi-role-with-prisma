@@ -1,8 +1,7 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -10,6 +9,7 @@ type EditFormProps = {
   user: {
     id: string;
     name: string | null;
+    email?: string | null;
     role: string | null;
     membershipId: string | null;
     membership?: {
@@ -20,176 +20,196 @@ type EditFormProps = {
   };
 };
 
-type FormValues = {
-  name: string;
-  status: string;
-  role: string;
-  membershipId: string | null;
-  startDate?: string;
-  endDate?: string;
-};
-
-export default function EditForm({ user }: EditFormProps) {
+export default function EditUserForm({ user }: EditFormProps) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
-    defaultValues: {
-      name: user.name ?? "",
-      status: user.membership?.status ?? "",
-      role: user.role ?? "",
-      membershipId: user.membershipId ?? "",
-      startDate: user.membership?.startDate ?? "",
-      endDate: user.membership?.endDate ?? "",
-    },
+  const [formData, setFormData] = useState({
+    name: user.name ?? "",
+    role: user.role ?? "user",
+    membershipId: user.membershipId ?? "",
+    status: user.membership?.status ?? "nonactive",
+    startDate: user.membership?.startDate ?? "",
+    endDate: user.membership?.endDate ?? "",
   });
 
-  async function onSubmit(data: FormValues) {
-    setLoading(true);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const res = await fetch(`/api/admin/edit/${user.id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        throw new Error(result.message || "Gagal update user");
+        toast.error(result.message || "Gagal update user");
+      } else {
+        toast.success("User berhasil diupdate!");
+        setTimeout(() => {
+          router.push("/admin");
+          router.refresh();
+        }, 1500);
       }
-
-      toast.success("User berhasil diupdate!");
-      
-      setTimeout(() => {
-        router.push("/admin");
-        router.refresh();
-      }, 1500);
-
-    } catch (err: any) {
-      toast.error(err.message || "Terjadi kesalahan");
+    } catch (err) {
+      toast.error("Terjadi kesalahan jaringan");
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-6">
+    <div>
       <ToastContainer
         position="top-center"
         autoClose={1500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
-        rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
         theme="dark"
       />
-      
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-base_semi_purple shadow-xl rounded-2xl p-8 w-full max-w-md space-y-6"
-      >
-        <h2 className="text-2xl font-bold text-center text-white">
-          Edit User
-        </h2>
 
+      <form onSubmit={handleSubmit} className="max-w-md">
         {/* Name */}
-        <div>
-          <label className="block font-medium text-white">Name</label>
+        <div className="mb-4">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+            Nama Lengkap
+          </label>
           <input
-            {...register("name", { required: "Nama wajib diisi" })}
-            className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded text-black"
+            required
           />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-          )}
         </div>
 
         {/* Role */}
-        <div>
-          <label className="block font-medium text-white">Role</label>
+        <div className="mb-6">
+          <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+            Role
+          </label>
           <select
-            {...register("role", { required: "Role wajib dipilih" })}
-            className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            id="role"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded text-black"
+            required
           >
-            <option value="">Pilih Role</option>
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
-          {errors.role && (
-            <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>
-          )}
-        </div>
-
-        {/* Status */}
-        <div>
-          <label className="block font-medium text-white">Status</label>
-          <select
-            {...register("status", { required: "Status wajib dipilih" })}
-            className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
-          >
-            <option value="">Pilih Status</option>
-            <option value="active">Active</option>
-            <option value="nonactive">Nonactive</option>
-          </select>
-          {errors.status && (
-            <p className="text-red-500 text-sm mt-1">{errors.status.message}</p>
-          )}
         </div>
 
         {/* Membership ID */}
-        <div>
-          <label className="block font-medium text-white">Membership ID</label>
+        <div className="mb-6">
+          <label
+            htmlFor="membershipId"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Membership ID
+          </label>
           <input
-            {...register("membershipId")}
-            placeholder="Masukkan ID Membership"
-            className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
             type="number"
-            inputMode="numeric"
+            id="membershipId"
+            name="membershipId"
+            value={formData.membershipId || ""}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded text-black"
+            placeholder="Kosongkan jika tidak ada"
           />
         </div>
 
         {/* Start Date */}
-        <div>
-          <label className="block font-medium text-white">Tanggal Mulai</label>
+        <div className="mb-6">
+          <label
+            htmlFor="startDate"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Tanggal Mulai
+          </label>
           <input
-            {...register("startDate")}
-            className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
             type="date"
+            id="startDate"
+            name="startDate"
+            value={formData.startDate || ""}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded text-black"
           />
         </div>
 
         {/* End Date */}
-        <div>
-          <label className="block font-medium text-white">Tanggal Selesai</label>
+        <div className="mb-6">
+          <label
+            htmlFor="endDate"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Tanggal Selesai
+          </label>
           <input
-            {...register("endDate")}
-            className="border p-2 w-full rounded-lg text-black focus:ring-2 focus:ring-purple-500 focus:outline-none"
             type="date"
+            id="endDate"
+            name="endDate"
+            value={formData.endDate || ""}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded text-black"
           />
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 justify-between">
+        {/* Status */}
+        <div className="mb-6">
+          <label
+            htmlFor="status"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Status Membership
+          </label>
+          <select
+            id="status"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded text-black"
+          >
+            <option value="active">Active</option>
+            <option value="nonactive">Nonactive</option>
+          </select>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex justify-end space-x-3">
           <button
             type="button"
-            onClick={() => router.back()}
-            className="bg-white text-base_purple px-4 py-2 rounded-lg hover:bg-purple-200 w-1/2"
+            onClick={() => router.push("/admin")}
+            className="px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-100 text-sm"
           >
             Batal
           </button>
           <button
             type="submit"
-            disabled={loading}
-            className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 w-1/2"
+            className="px-4 py-2 bg-base_purple text-white rounded hover:bg-purple-700 disabled:bg-purple-400 text-sm"
+            disabled={isSubmitting}
           >
-            {loading ? "Updating..." : "Update"}
+            {isSubmitting ? "Updating..." : "Update User"}
           </button>
         </div>
       </form>

@@ -26,8 +26,8 @@ const CategorySection = () => {
   ];
 
   return (
-    <section className="py-16 bg-black mt-20">
-      <div className="container mx-auto px-4">
+    <section className="py-16 bg-black">
+      <div className="container mx-auto px-4 mt-20">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold uppercase text-white">
             <span className="text-base_purple">K</span>ATEGORI

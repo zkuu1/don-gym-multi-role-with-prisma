@@ -12,6 +12,7 @@ const Appbar = () => {
 
   // Periksa apakah user memiliki role admin
   const isAdmin = session?.user?.role === 'admin';
+  const isLogin = session?.user?.role === 'user';
 
   return (
     <header className="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md bg-base_purple opacity-75 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
@@ -175,6 +176,15 @@ const Appbar = () => {
                 className="inline-block rounded-lg px-2 py-1 text-sm font-medium text-white transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
               >
                 Admin
+              </Link>
+            )}
+
+            {isLogin && (
+              <Link
+                href="/user"
+                className="inline-block rounded-lg px-2 py-1 text-sm font-medium text-white transition-all duration-200 hover:bg-gray-100 hover:text-gray-900"
+              >
+                Dashboard
               </Link>
             )}
           </div>

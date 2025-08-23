@@ -62,7 +62,7 @@ export const authOptions: AuthOptions = {
           id: message.user.id, // ID yang sama dengan User
           startDate: new Date(),
           endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // 1 tahun
-          status: "nonaktif",
+          status: "nonactive",
           type: "non membership",
         },
       });
