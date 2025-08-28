@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Search from "./Search";
 import { CreateButton, EditButton, DeleteButton } from "./Button";
 
+
 import { getUsers } from "@/lib/data";
 
 const Statistic = async () => {
@@ -17,6 +18,8 @@ const Statistic = async () => {
   if (session.user.role !== "admin") {
     return <div className="p-6 text-red-600 font-semibold">Unauthorized</div>;
   }
+
+
 
   
   // Mapping users to a format suitable for the table

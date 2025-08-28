@@ -1,8 +1,8 @@
-import CategorySection from "@/components/category"
-import FindUsSection from "@/components/FindUs"
+import CategorySection from "@/components/Category"
+
 import MemberCard from "@/components/Member"
 import WheyProducts from "@/components/product"
-import GallerySlider from "@/components/gallery"
+import GallerySlider from "@/components/Gallery"
 
 
 
