@@ -56,24 +56,34 @@ export async function PUT(
       );
     }
 
-    const updatedUser = await prisma.user.update({
-      where: { id: params.id },
-      data: {
-        name: body.name,
-        role: body.role, // ← Tambahkan update role
-        membershipId: body.membershipId || null, // ← Tambahkan update membershipId
-        membership: {
-          update: {
-            status: body.status,
-            startDate: body.startDate ? new Date(body.startDate) : undefined,
-            endDate: body.endDate ? new Date(body.endDate) : undefined,
-          },
+   const updatedUser = await prisma.user.update({
+  where: { id: params.id },
+  data: {
+    name: body.name,
+    role: body.role,
+    membershipId: body.membershipId || null,
+    membership: {
+      upsert: {
+        update: {
+          status: body.status,
+          startDate: body.startDate ? new Date(body.startDate) : undefined,
+          endDate: body.endDate ? new Date(body.endDate) : undefined,
+          type: body.type || "basic",
+        },
+        create: {
+          status: body.status,
+          startDate: body.startDate ? new Date(body.startDate) : new Date(),
+          endDate: body.endDate ? new Date(body.endDate) : new Date(),
+          type: body.type || "basic",
         },
       },
-      include: {
-        membership: true,
-      },
-    });
+    },
+  },
+  include: {
+    membership: true,
+  },
+});
+
 
     return NextResponse.json(
       { 

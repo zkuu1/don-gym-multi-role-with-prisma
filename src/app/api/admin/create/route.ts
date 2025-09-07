@@ -18,9 +18,9 @@ export async function POST(req: Request) {
     } = body;
 
     // Validasi data wajib
-    if (!name || !email || !password || !role || !status) {
+    if (!name || !email || !password || !role) {
       return NextResponse.json(
-        { message: "Nama, email, password, role, dan status harus diisi" },
+        { message: "Nama, email, password, dan role harus diisi" },
         { status: 400 }
       );
     }
@@ -35,10 +35,7 @@ export async function POST(req: Request) {
     }
 
     // Validasi: pastikan email belum terdaftar
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-
+    const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return NextResponse.json(
         { message: "Email sudah terdaftar" },
@@ -49,7 +46,7 @@ export async function POST(req: Request) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Data untuk membuat user
+    // Data dasar user
     const userData: any = {
       name,
       email,
@@ -57,30 +54,30 @@ export async function POST(req: Request) {
       role,
     };
 
-    // Membership wajib ada → membershipId, startDate, endDate, type, status harus ada
-    if (!membershipId || !startDate || !endDate || !type) {
-      return NextResponse.json(
-        { message: "Membership harus disertakan lengkap (id, type, startDate, endDate)" },
-        { status: 400 }
-      );
-    }
+    // Kalau membershipId diisi → buat membership baru
+    if (membershipId) {
+      if (!startDate || !endDate || !type) {
+        return NextResponse.json(
+          { message: "Kalau ada membership, startDate, endDate, dan type harus diisi" },
+          { status: 400 }
+        );
+      }
 
-    userData.membership = {
-      create: {
-        id: membershipId,
-        status,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
-        type,
-      },
-    };
+      userData.membership = {
+        create: {
+          id: String(membershipId), // pastikan jadi string
+          status,
+          startDate: new Date(startDate),
+          endDate: new Date(endDate),
+          type,
+        },
+      };
+    }
 
     // Buat user baru
     const user = await prisma.user.create({
       data: userData,
-      include: {
-        membership: true,
-      },
+      include: { membership: true },
     });
 
     return NextResponse.json(

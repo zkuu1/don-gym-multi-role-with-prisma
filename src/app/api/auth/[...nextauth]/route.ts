@@ -55,19 +55,27 @@ export const authOptions: AuthOptions = {
 
   events: {
     async createUser(message) {
+
+      // Optionally, you can remove this call if not needed, or provide valid 'data' if you intend to create a user here.
+      await prisma.user.create({
+        data: {
+          createdAt: new Date
+        }
+      }),
       // message.user = user baru yang dibuat
       await prisma.membership.create({
         data: {
           userId: message.user.id, // relasi ke User
           id: message.user.id, // ID yang sama dengan User
-          startDate: new Date(),
-          endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // 1 tahun
+          startDate: "-",
+          endDate: "-",
           status: "nonactive",
           type: "non membership",
         },
       });
     },
   },
+
 };
 
 const handler = NextAuth(authOptions);

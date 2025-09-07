@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getUsers } from "@/lib/data";
+
+
 
 type EditFormProps = {
   user: {
@@ -24,14 +27,19 @@ export default function EditUserForm({ user }: EditFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: user.name ?? "",
-    role: user.role ?? "user",
-    membershipId: user.membershipId ?? "",
-    status: user.membership?.status ?? "nonactive",
-    startDate: user.membership?.startDate ?? "",
-    endDate: user.membership?.endDate ?? "",
-  });
+const [formData, setFormData] = useState({
+  name: user.name ?? "",
+  role: user.role ?? "user",
+  membershipId: user.membershipId ?? "",
+  status: user.membership?.status ?? "nonactive",
+  startDate: user.membership?.startDate
+    ? new Date(user.membership.startDate).toISOString().split("T")[0]
+    : "",
+  endDate: user.membership?.endDate
+    ? new Date(user.membership.endDate).toISOString().split("T")[0]
+    : "",
+});
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -169,7 +177,7 @@ export default function EditUserForm({ user }: EditFormProps) {
             type="date"
             id="endDate"
             name="endDate"
-            value={formData.endDate || ""}
+            value={formData.endDate || "tanggal"}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded text-black"
           />

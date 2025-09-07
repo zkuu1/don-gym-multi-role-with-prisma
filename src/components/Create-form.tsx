@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -22,14 +22,20 @@ const CreateUserForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
+    // 🔍 Validasi tambahan di frontend
+    if (formData.membershipId) {
+      if (!formData.startDate || !formData.endDate || !formData.type) {
+        toast.error("Kalau Membership ID diisi, Start Date, End Date, dan Type wajib diisi!");
+        return;
+      }
+    }
+
+    setIsSubmitting(true);
     try {
       const response = await fetch("/api/admin/create", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -59,25 +65,12 @@ const CreateUserForm = () => {
 
   return (
     <div>
-      <ToastContainer
-        position="top-center"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+      <ToastContainer position="top-center" autoClose={1500} theme="dark" />
 
       <form onSubmit={handleSubmit} className="max-w-md">
         {/* Name */}
         <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="name" className="block text-sm font-medium mb-1 text-black">
             Nama Lengkap
           </label>
           <input
@@ -93,10 +86,7 @@ const CreateUserForm = () => {
 
         {/* Email */}
         <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="email" className="block text-sm font-medium mb-1 text-black">
             Email
           </label>
           <input
@@ -112,10 +102,7 @@ const CreateUserForm = () => {
 
         {/* Password */}
         <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="password" className="block text-sm font-medium mb-1 text-black">
             Password
           </label>
           <input
@@ -132,10 +119,7 @@ const CreateUserForm = () => {
 
         {/* Role */}
         <div className="mb-6">
-          <label
-            htmlFor="role"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="role" className="block text-sm font-medium mb-1 text-black">
             Role
           </label>
           <select
@@ -144,7 +128,6 @@ const CreateUserForm = () => {
             value={formData.role}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded text-black"
-            required
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
@@ -153,29 +136,23 @@ const CreateUserForm = () => {
 
         {/* Membership ID */}
         <div className="mb-6">
-          <label
-            htmlFor="membershipId"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="membershipId" className="block text-sm font-medium mb-1 text-black">
             Membership ID
           </label>
           <input
-            type="number"
+            type="text"
             id="membershipId"
             name="membershipId"
-            value={formData.membershipId || ""}
+            value={formData.membershipId}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded text-black"
-            placeholder="Kalau tidak ada membership, kosongkan saja"
+            placeholder="Kosongkan jika tidak ada"
           />
         </div>
 
         {/* Start Date */}
         <div className="mb-6">
-          <label
-            htmlFor="startDate"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="startDate" className="block text-sm font-medium mb-1 text-black">
             Tanggal Mulai
           </label>
           <input
@@ -185,15 +162,13 @@ const CreateUserForm = () => {
             value={formData.startDate}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded text-black"
+            disabled={!formData.membershipId} // ⛔ Nonaktif kalau membershipId kosong
           />
         </div>
 
         {/* End Date */}
         <div className="mb-6">
-          <label
-            htmlFor="endDate"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="endDate" className="block text-sm font-medium mb-1 text-black">
             Tanggal Selesai
           </label>
           <input
@@ -203,15 +178,14 @@ const CreateUserForm = () => {
             value={formData.endDate}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded text-black"
+            disabled={!formData.membershipId}
           />
         </div>
 
+
         {/* Status */}
         <div className="mb-6">
-          <label
-            htmlFor="status"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="status" className="block text-sm font-medium mb-1 text-black">
             Status Membership
           </label>
           <select
@@ -220,6 +194,7 @@ const CreateUserForm = () => {
             value={formData.status}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded text-black"
+            disabled={!formData.membershipId}
           >
             <option value="active">Active</option>
             <option value="nonactive">Nonactive</option>

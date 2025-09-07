@@ -3,6 +3,7 @@ import CategorySection from "@/components/Category"
 import MemberCard from "@/components/Member"
 import WheyProducts from "@/components/product"
 import GallerySlider from "@/components/Gallery"
+import FAQComponent from "@/components/Faq"
 
 
 
@@ -41,6 +42,7 @@ export default function Muscle () {
       <MemberCard />
       <WheyProducts />
        <GallerySlider/>  
+       <FAQComponent/>
 
     </div>
   )

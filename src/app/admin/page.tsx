@@ -246,7 +246,9 @@ const AdminPage = async () => {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             <div className="col-span-full">
-              <Statistic />
+              <Statistic searchParams={{
+                query: undefined
+              }} />
             </div>
           </div>
 

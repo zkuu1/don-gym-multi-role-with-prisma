@@ -54,7 +54,7 @@ export default function MemberCard() {
           <div className="absolute inset-0 rounded-2xl ring-4 ring-base_purple/30 ring-inset pointer-events-none" />
 
           {/* Member Section */}
-          <div className="lg:w-2/3 p-8 relative z-10">
+          <div className="lg:w-2/3 p-12  relative z-10">
             <div className="text-center mb-8">
               <h1 className="text-4xl font-bold text-gray-900">MEMBER</h1>
               <p className="text-gray-600 mt-2">Exclusive membership benefits</p>

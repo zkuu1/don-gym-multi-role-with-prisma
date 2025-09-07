@@ -6,12 +6,13 @@ export async function getUsers(query?: string) {
   if (query) {
     where.OR = [
       { name: { contains: query, mode: "insensitive" } }, // cari nama (case-insensitive)
-      { membershipId: { contains: query } }, // cari membershipId
+      { id: { contains: query } }, // cari membershipId
     ];
   }
 
   return await prisma.user.findMany({
     where,
+    
     select: {
       id: true,
       name: true,
@@ -24,9 +25,10 @@ export async function getUsers(query?: string) {
           status: true,
         },
       },
+      createdAt: true,
     },
     orderBy: {
-      createdAt: "desc", // urutkan dari terbaru
+      createdAt: "desc", 
     },
   });
 }
