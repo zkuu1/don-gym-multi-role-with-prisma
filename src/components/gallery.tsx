@@ -8,28 +8,8 @@ import Lobby from "@/images/lobby.jpg";
 import Place from "@/images/place.jpg";
 import MainHall from "@/images/main_hall.jpg";
 import BackHall from "@/images/back_hall.jpg";
+import { containerVariants, itemVariants, dividerVariants } from "@/utils/motion";
 
-const containerVariants: Variants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.3,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      ease: [0.16, 1, 0.3, 1],
-      duration: 0.6,
-    },
-  },
-};
 
 const GallerySlider = () => {
   const images = [
@@ -65,16 +45,18 @@ const GallerySlider = () => {
         viewport={{ once: true, amount: 0.2 }}
         variants={containerVariants}
       >
-        {/* Title */}
-        <motion.div className="text-center mb-16" variants={itemVariants}>
-          <h2 className="text-5xl md:text-6xl font-bold uppercase text-white">
-            <span className="text-base_purple">G</span>allery
+       <motion.div className="text-center mb-16" variants={itemVariants}>
+          <h2 className="text-5xl md:text-6xl font-bold text-white">
+            Category <span className="text-base_purple">Sec</span>tion
           </h2>
-          <motion.div
-            className="w-24 h-1 bg-base_purple mx-auto mt-6"
-            variants={itemVariants}
-          />
-        </motion.div>
+      <motion.div
+          className="w-24 h-1 bg-base_purple mx-auto mt-6"
+          variants={dividerVariants}
+      />
+          <p className="text-gray-300 max-w-2xl mx-auto mt-4">
+            Explore our gallery showcasing the vibrant atmosphere and state-of-the-art facilities at Don Gym, designed to inspire your fitness journey.
+          </p>
+      </motion.div>
 
         {/* Wrapper with border & glow */}
         <motion.div

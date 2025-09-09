@@ -2,53 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import { FaUsers, FaImages, FaPills, FaQuestionCircle } from "react-icons/fa";
-
-const containerVariants: Variants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      ease: [0.16, 1, 0.3, 1],
-      duration: 0.5,
-    },
-  },
-};
-
-const dividerVariants: Variants = {
-  hidden: { scaleX: 0 },
-  show: {
-    scaleX: 1,
-    transition: {
-      ease: [0.16, 1, 0.3, 1],
-      duration: 0.8,
-      delay: 0.5,
-    },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.1 * i,
-      duration: 0.6,
-      ease: [0.34, 1.56, 0.64, 1], // backOut feel
-    },
-  }),
-};
+import { containerVariants, itemVariants, dividerVariants, cardVariants } from "@/utils/motion";
 
 const categories = [
   {
@@ -75,7 +29,7 @@ const categories = [
 
 export default function CategorySection() {
   return (
-    <section className="py-20 bg-black">
+    <section className="py-32 bg-black">
       <motion.div
         className="container mx-auto px-4"
         initial="hidden"
@@ -85,16 +39,18 @@ export default function CategorySection() {
       >
         {/* Title */}
         <motion.div className="text-center mb-16" variants={containerVariants}>
-          <motion.h2
-            className="text-5xl md:text-6xl font-bold uppercase text-white"
-            variants={itemVariants}
-          >
-            <span className="text-base_purple">K</span>ategori
-          </motion.h2>
-          <motion.div
-            className="w-24 h-1 bg-base_purple mx-auto mt-6"
-            variants={dividerVariants}
-          />
+          <motion.div className="text-center mb-16" variants={itemVariants}>
+            <h2 className="text-5xl md:text-6xl font-bold text-white">
+               Category <span className="text-base_purple">Sec</span>tion
+             </h2>
+           <motion.div
+              className="w-24 h-1 bg-base_purple mx-auto mt-6"
+              variants={dividerVariants}
+            />
+             <p className="text-gray-300 max-w-2xl mx-auto mt-4">
+              Explore our diverse categories designed to enhance your fitness journey, from memberships to supplements and more.
+            </p>
+            </motion.div>
         </motion.div>
 
         {/* Box dengan border & glow */}

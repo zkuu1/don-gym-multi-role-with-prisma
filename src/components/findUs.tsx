@@ -1,71 +1,13 @@
 'use client';
 
-import { Variants, motion } from 'framer-motion';
+import { Variants, motion, AnimatePresence } from 'framer-motion';
 import React, { useState } from 'react';
+import { containerVariants, itemVariants, dividerVariants, cardVariants, titleVariants, detailVariants } from '@/utils/motion';
 
 const FindUsSection = () => {
   const [activeLocation, setActiveLocation] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Animation variants
-  const containerVariants: Variants = {
-    hidden: {},
-    show: {
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        ease: [0.16, 1, 0.3, 1],
-        duration: 0.5,
-      },
-    },
-  };
-
-  const titleVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        ease: [0.16, 1, 0.3, 1],
-        duration: 0.8,
-      },
-    },
-  };
-
-  const dividerVariants: Variants = {
-    hidden: { scaleX: 0 },
-    show: {
-      scaleX: 1,
-      transition: {
-        ease: [0.16, 1, 0.3, 1],
-        duration: 0.8,
-        delay: 0.5,
-      },
-    },
-  };
-
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    show: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.1 * i,
-        duration: 0.6,
-        ease: [0.34, 1.56, 0.64, 1],
-      },
-    }),
-  };
 
   const locations = [
     {
@@ -93,15 +35,15 @@ const FindUsSection = () => {
       id: 4,
       name: 'Contact Person',
       address: 'Instagram: @dongymfitness',
-      details: 'Specialized in strength training and bodybuilding',
-      hours: 'Open 24/7',
+      details: 'Reach out to us for inquiries and updates',
+      hours: 'Always available',
     },
   ];
 
   return (
     <section className="py-20 bg-black">
       <div className="container mx-auto px-4">
-        {/* Title + Divider */}
+        {/* Title */}
         <div className="text-center mb-16">
           <motion.h2
             className="text-5xl md:text-6xl font-bold uppercase text-white"
@@ -120,7 +62,7 @@ const FindUsSection = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Map Container */}
+          {/* Map */}
           <motion.div
             className="lg:w-7/12 bg-gray-900 rounded-xl p-6 border-2 border-base_purple relative overflow-hidden"
             variants={itemVariants}
@@ -146,7 +88,7 @@ const FindUsSection = () => {
             </div>
           </motion.div>
 
-          {/* Location List with Stagger Animation */}
+          {/* Locations */}
           <motion.div
             className="lg:w-5/12"
             variants={containerVariants}
@@ -197,29 +139,39 @@ const FindUsSection = () => {
                       </div>
                     </div>
 
-                    {activeLocation === location.id && (
-                      <div className="mt-3 pl-14">
-                        <p className="text-gray-200 text-sm">
-                          {location.details}
-                        </p>
-                        <div className="mt-2 flex items-center">
-                          <svg
-                            className="w-4 h-4 text-cyan-300 mr-2"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <span className="text-cyan-200 text-sm">
-                            {location.hours}
-                          </span>
-                        </div>
-                      </div>
-                    )}
+                    {/* Animate details */}
+                    <AnimatePresence>
+                      {activeLocation === location.id && (
+                        <motion.div
+                          key="details"
+                          variants={detailVariants}
+                          initial="hidden"
+                          animate="show"
+                          exit="exit"
+                          className="mt-3 pl-14"
+                        >
+                          <p className="text-gray-200 text-sm">
+                            {location.details}
+                          </p>
+                          <div className="mt-2 flex items-center">
+                            <svg
+                              className="w-4 h-4 text-cyan-300 mr-2"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <span className="text-cyan-200 text-sm">
+                              {location.hours}
+                            </span>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 ))}
               </div>

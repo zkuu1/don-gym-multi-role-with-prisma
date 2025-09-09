@@ -24,6 +24,18 @@ const itemVariants: Variants = {
   },
 };
 
+const dividerVariants: Variants = {
+  hidden: { scaleX: 0 },
+  show: {
+    scaleX: 1,
+    transition: {
+      ease: [0.16, 1, 0.3, 1],
+      duration: 0.8,
+      delay: 0.5,
+    },
+  },
+};
+
 export default function MemberCard() {
   return (
     <section className="py-20 bg-black">
@@ -36,13 +48,16 @@ export default function MemberCard() {
       >
         {/* Title */}
         <motion.div className="text-center mb-16" variants={itemVariants}>
-          <h2 className="text-5xl md:text-6xl font-bold uppercase text-white">
-            <span className="text-base_purple">Mem</span>ber
+          <h2 className="text-5xl md:text-6xl font-bold text-white">
+            Mem<span className="text-base_purple">ber</span>ship Plan
           </h2>
           <motion.div
-            className="w-24 h-1 bg-base_purple mx-auto mt-6"
-            variants={itemVariants}
-          />
+           className="w-24 h-1 bg-base_purple mx-auto mt-6"
+           variants={dividerVariants}
+           />
+           <p className="text-gray-300 max-w-2xl mx-auto mt-4">
+            See our membership plans and benefits, tailored for you, designed to help you achieve your fitness goals.
+          </p>
         </motion.div>
 
         {/* Card Section */}
@@ -56,7 +71,7 @@ export default function MemberCard() {
           {/* Member Section */}
           <div className="lg:w-2/3 p-12  relative z-10">
             <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-gray-900">MEMBER</h1>
+              <h1 className="text-4xl font-bold text-gray-900">Member</h1>
               <p className="text-gray-600 mt-2">Exclusive membership benefits</p>
             </div>
 

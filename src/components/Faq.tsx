@@ -32,18 +32,18 @@ const FAQComponent = () => {
   const faqData = [
     {
       id: 1,
-      question: "Bagaimana saya bisa melatih otot?",
-      answer: "Untuk melatih otot, Anda perlu melakukan latihan kekuatan secara teratur seperti angkat beban, push-up, atau pull-up. Kombinasikan dengan konsumsi protein yang cukup dan istirahat yang baik untuk hasil optimal."
+      question: "How to train my muscles?",
+      answer: "To build muscle, you need to do regular strength training exercises like weightlifting, push-ups, or pull-ups. Combine this with adequate protein intake and proper rest for optimal results."
     },
     {
       id: 2,
-      question: "Bagaimana saya bisa melatih otot?",
-      answer: "Latihan otot memerlukan konsistensi. Mulailah dengan beban yang sesuai dengan kemampuan Anda, lalu tingkatkan intensitasnya secara bertahap. Jangan lupa untuk melatih semua kelompok otot secara seimbang."
+      question: "until when is the membership valid?",
+      answer: "Every time you register for membership it will be valid for 2 years."
     },
     {
       id: 3,
-      question: "Bagaimana saya bisa melatih otot?",
-      answer: "Selain latihan beban, pastikan Anda menjaga pola makan dengan nutrisi yang cukup untuk mendukung pertumbuhan otot. Protein, karbohidrat kompleks, dan lemak sehat sangat penting dalam proses ini."
+      question: "How much does each workout cost for members and non-members?",
+      answer: "For members the fee is Rp. 7,000 and for non-members it is Rp. 14,000."
     },
     {
       id: 4,

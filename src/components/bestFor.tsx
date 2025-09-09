@@ -1,6 +1,9 @@
-// components/EquipmentSection.tsx
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 import Treadmill from "../images/treadmill.jpg";
+import { containerVariants, itemVariants } from "@/utils/motion";
 
 const BestForSection = () => {
   const equipmentItems = [
@@ -8,7 +11,7 @@ const BestForSection = () => {
       id: 1,
       title: "1K+",
       subtitle: "Active Members",
-      description: "Trusted by many to supporttheir fitness journey",
+      description: "Trusted by many to support their fitness journey",
     },
     {
       id: 2,
@@ -16,35 +19,53 @@ const BestForSection = () => {
       subtitle: "Fitness Equipment",
       description: "High-performance running machines with incline options",
     },
-     {
+    {
       id: 3,
       title: "90%",
       subtitle: "Satisfied Customers",
       description: "We prioritize customer satisfaction with our services",
     },
-
-    // ... other equipment items
   ];
+
+  
 
   return (
     <section className="py-20 bg-black">
-      {/* Main container with controlled width and padding */}
       <div className="container mx-auto px-4">
         {/* Section Title */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-bold uppercase text-white">
+        <motion.div
+          className="text-center mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <motion.h2
+            className="text-5xl md:text-6xl font-bold uppercase text-white"
+            variants={itemVariants}
+          >
             Why Is DON GYM Best For
-          </h2>
-          <h2 className="text-5xl md:text-6xl font-bold uppercase text-white mt-2">
+          </motion.h2>
+          <motion.h2
+            className="text-5xl md:text-6xl font-bold uppercase text-white mt-2"
+            variants={itemVariants}
+          >
             You
-          </h2>
-          <div className="w-24 h-1 bg-base_purple mx-auto mt-6">
+          </motion.h2>
+          <motion.div
+            className="w-24 h-1 bg-base_purple mx-auto mt-6"
+            variants={itemVariants}
+          />
+        </motion.div>
 
-          </div>
-        </div>
-
-        {/* Equipment Grid with proper spacing */}
-      <div className="relative border-2 border-base_purple rounded-xl p-6 shadow-lg">
+        {/* Equipment Grid */}
+        <motion.div
+          className="relative border-2 border-base_purple rounded-xl p-6 shadow-lg"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+        >
           <div className="absolute inset-0 rounded-xl ring-4 ring-base_purple/30 ring-inset pointer-events-none"></div>
 
           {/* Wrapper */}
@@ -55,9 +76,12 @@ const BestForSection = () => {
             "
           >
             {equipmentItems.map((item) => (
-              <div
+              <motion.div
                 key={item.id}
-                className="min-w-[250px] md:min-w-0 bg-base_purple rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 border-white"
+                className="min-w-[250px] md:min-w-0 bg-base_purple rounded-xl overflow-hidden shadow-lg border-2 border-white"
+                variants={itemVariants}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
                 <div className="relative h-6 sm:h-10 md:h-12 bg-base_purple" />
                 <div className="p-3 sm:p-4 md:p-6">
@@ -71,11 +95,10 @@ const BestForSection = () => {
                     {item.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-    </div>
-
+        </motion.div>
       </div>
     </section>
   );
