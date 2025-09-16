@@ -5,17 +5,49 @@ import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import GoogleSigninButton from "@/components/GoogleSigninButton";
 import GithubSigninButton from "@/components/GithubSigninButton";
+import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [modal, setModal] = useState<{
+    title: string;
+    message: string;
+    type: "success" | "error" | "info";
+  } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt with:", { email, password });
+    setError("");
+    setSuccess("");
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Terjadi kesalahan");
+      } else {
+        setSuccess("Registrasi berhasil! Silakan login.");
+        router.push("/login");
+        setName("");
+        setEmail("");
+        setPassword("");
+      }
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -28,12 +60,10 @@ export default function LoginPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">DON GYM FITNESS</h1>
               <div className="w-20 h-1 bg-white mb-6"></div>
             </div>
-            
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold text-white">Welcome</h2>
-              <h3 className="text-3xl md:text-4xl font-bold text-white">Welcome</h3>
+              <h3 className="text-3xl md:text-4xl font-bold text-white">Join Us</h3>
             </div>
-            
             <div className="mt-8">
               <p className="text-white/80 text-lg">
                 Transform your body, transform your life. Start your fitness journey with us today.
@@ -49,26 +79,27 @@ export default function LoginPage() {
                 <p className="text-gray-600 mt-2">Create Your Account</p>
               </div>
 
-             
+              {error && <p className="text-red-600 text-center mb-4">{error}</p>}
+              {success && <p className="text-green-600 text-center mb-4">{success}</p>}
+
               <div className="relative mb-8">
                 <GoogleSigninButton />
               </div>
-
-                 <div className="relative mb-8">
-                <GithubSigninButton/>
+              <div className="relative mb-8">
+                <GithubSigninButton />
               </div>
-              
-              
+
               <div className="relative mt-4">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
                 <div className="relative flex justify-center">
-                  <span className="bg-white px-4 text-gray-500">or login with email</span>
+                  <span className="bg-white px-4 text-gray-500">or register with email</span>
                 </div>
               </div>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Name */}
                 <div>
                   <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Name</label>
                   <input
@@ -83,6 +114,7 @@ export default function LoginPage() {
                   />
                 </div>
 
+                {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
                   <input
@@ -97,6 +129,7 @@ export default function LoginPage() {
                   />
                 </div>
 
+                {/* Password */}
                 <div>
                   <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password</label>
                   <div className="relative">
@@ -115,38 +148,23 @@ export default function LoginPage() {
                       className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
                       onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
+                      {showPassword ? <FaEye className="h-5 w-5" /> : <FaEyeSlash className="h-5 w-5" />}
                     </button>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center">
-                    <input
-                      id="remember"
-                      type="checkbox"
-                      className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-                    />
-                    <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-                      Remember me
-                    </label>
-                  </div>
-                  <a href="#" className="text-sm font-medium text-purple-600 hover:text-purple-500">
-                    Forgot password?
-                  </a>
-                </div>
-
+                {/* Submit */}
                 <button
                   type="submit"
                   className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-xl"
                 >
-                  Login
+                  Register
                 </button>
               </form>
-              
+
               <div className="mt-8 text-center">
                 <p className="text-gray-600">
-                  Have an account?{" "}
+                  Already have an account?{" "}
                   <a href="/login" className="font-medium text-purple-600 hover:text-purple-500">
                     Sign In
                   </a>
@@ -155,7 +173,7 @@ export default function LoginPage() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-gray-800 p-4 text-center text-gray-300 text-sm">
           <p>Copyright © DON GYM FITNESS 2025. All rights reserved.</p>
         </div>

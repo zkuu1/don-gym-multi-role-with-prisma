@@ -19,7 +19,7 @@ const Appbar = () => {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/muscle", label: "Hit The Muscle" },
-    { href: "/about", label: "Tentang Kami" },
+    { href: "/about", label: "About Us" },
     { href: "/others", label: "Others" },
   ];
 

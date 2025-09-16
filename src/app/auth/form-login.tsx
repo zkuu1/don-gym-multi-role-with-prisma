@@ -1,20 +1,42 @@
 'use client';
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import GoogleSigninButton from "@/components/GoogleSigninButton";
 import GithubSigninButton from "@/components/GithubSigninButton";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt with:", { email, password });
+    setError("");
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Login gagal");
+        return;
+      }
+
+      // Jika berhasil, arahkan ke dashboard
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -27,12 +49,12 @@ export default function LoginPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">DON GYM FITNESS</h1>
               <div className="w-20 h-1 bg-white mb-6"></div>
             </div>
-            
+
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold text-white">Welcome</h2>
-              <h3 className="text-3xl md:text-4xl font-bold text-white">Welcome</h3>
+              <h3 className="text-3xl md:text-4xl font-bold text-white">Login</h3>
             </div>
-            
+
             <div className="mt-8">
               <p className="text-white/80 text-lg">
                 Transform your body, transform your life. Start your fitness journey with us today.
@@ -48,15 +70,18 @@ export default function LoginPage() {
                 <p className="text-gray-600 mt-2">Sign in to access your account</p>
               </div>
 
-               
+              {error && (
+                <p className="text-red-600 text-center mb-4">{error}</p>
+              )}
+
               <div className="relative mb-8">
                 <GoogleSigninButton />
               </div>
 
-                 <div className="relative mb-8">
-                <GithubSigninButton/>
+              <div className="relative mb-8">
+                <GithubSigninButton />
               </div>
-              
+
               <div className="relative mb-8">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
@@ -65,10 +90,13 @@ export default function LoginPage() {
                   <span className="bg-white px-4 text-gray-500">or login with email</span>
                 </div>
               </div>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Email */}
                 <div>
-                  <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
+                  <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+                    Email
+                  </label>
                   <input
                     id="email"
                     name="email"
@@ -81,8 +109,11 @@ export default function LoginPage() {
                   />
                 </div>
 
+                {/* Password */}
                 <div>
-                  <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password</label>
+                  <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+                    Password
+                  </label>
                   <div className="relative">
                     <input
                       id="password"
@@ -104,22 +135,7 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center">
-                    <input
-                      id="remember"
-                      type="checkbox"
-                      className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-                    />
-                    <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-                      Remember me
-                    </label>
-                  </div>
-                  <a href="#" className="text-sm font-medium text-purple-600 hover:text-purple-500">
-                    Forgot password?
-                  </a>
-                </div>
-
+                {/* Submit */}
                 <button
                   type="submit"
                   className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-xl"
@@ -127,11 +143,14 @@ export default function LoginPage() {
                   Login
                 </button>
               </form>
-              
+
               <div className="mt-8 text-center">
                 <p className="text-gray-600">
                   Don't have an account?{" "}
-                  <a href="/register" className="font-medium text-purple-600 hover:text-purple-500">
+                  <a
+                    href="/register"
+                    className="font-medium text-purple-600 hover:text-purple-500"
+                  >
                     Sign Up
                   </a>
                 </p>
@@ -139,7 +158,7 @@ export default function LoginPage() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-gray-800 p-4 text-center text-gray-300 text-sm">
           <p>Copyright © DON GYM FITNESS 2025. All rights reserved.</p>
         </div>

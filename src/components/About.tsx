@@ -5,26 +5,26 @@ import image1 from "../../src/images/lobby.jpg";
 import image2 from "../../src/images/place.jpg";
 import image3 from "../../src/images/lobby_2.jpg";
 import { motion } from "framer-motion";
-import { containerVariants, itemVariants } from "@/utils/motion";
+import { containerVariants, itemVariants, dividerVariants } from "@/utils/motion";
 
 export default function AboutSection() {
   return (
     <section className="bg-black text-white py-32 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
-        <motion.div
-          className="text-center mb-16"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <motion.h2
-            className="text-5xl md:text-6xl font-bold  text-white"
-            variants={itemVariants}
-          >
-            <span className="text-base_purple">Tenta</span>ng Kami
-          </motion.h2>
+        <motion.div className="text-center mb-16" variants={containerVariants}>
+          <motion.div className="text-center mb-16" variants={itemVariants}>
+            <h2 className="text-5xl md:text-6xl font-bold text-white">
+               About <span className="text-base_purple">Us</span>
+             </h2>
+           <motion.div
+              className="w-24 h-1 bg-base_purple mx-auto mt-6"
+              variants={dividerVariants}
+            />
+             <p className="text-gray-300 max-w-2xl mx-auto mt-4">
+              Explore our diverse about us designed to enhance your affinity
+            </p>
+            </motion.div>
         </motion.div>
 
         {/* Grid Image */}
