@@ -6,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import GoogleSigninButton from "@/components/GoogleSigninButton";
 import GithubSigninButton from "@/components/GithubSigninButton";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,25 +19,19 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Login gagal");
-        return;
-      }
-
-      // Jika berhasil, arahkan ke dashboard
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message);
+    if (res?.error) {
+      setError("Email atau password salah");
+      return;
     }
+
+    // kalau berhasil
+    router.push("/user");
   };
 
   return (

@@ -5,7 +5,7 @@ import NextAuth from "next-auth/next";
 import Github from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs"; 
+import bcrypt from "bcryptjs";
 
 export const authOptions: AuthOptions = {
   session: {
@@ -22,7 +22,7 @@ export const authOptions: AuthOptions = {
           name: `${profile.given_name} ${profile.family_name}`,
           email: profile.email,
           image: profile.picture,
-          role: profile.role ? profile.role : "user",
+          role: "user",
         };
       },
     }),
@@ -35,7 +35,7 @@ export const authOptions: AuthOptions = {
           name: profile.name || profile.login,
           email: profile.email,
           image: profile.avatar_url,
-          role: profile.role ? profile.role : "user",
+          role: "user",
         };
       },
     }),
@@ -58,59 +58,66 @@ export const authOptions: AuthOptions = {
           throw new Error("User tidak ditemukan atau belum set password");
         }
 
-        // Sekarang aman, karena user.password pasti string
         const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) {
           throw new Error("Password salah");
         }
 
-        return {
-          id: user.id,
-          name: user.name ?? "", // fallback kalau null
-          email: user.email ?? "",
-          role: user.role,
-        };
-
+        return user;
       },
     }),
   ],
   pages: {
-    signIn: "/auth/google-login",
-    signOut: "/login/page",
+    signIn: "/login",
+    signOut: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
+      async jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role;  // ✅ simpan role di JWT, type assertion to bypass TS error
+        // ketika pertama kali login
+        token.role = (user as any).role ?? "user";
         token.name = user.name ?? null;
-        token.image = user.image ?? null;
+        token.image = (user as any).image ?? null;
+
+        console.log("✅ JWT Token after login:", {
+          id: (user as any).id, // pakai user.id
+          email: user.email,
+          role: token.role,
+          name: token.name,
+        });
+      } else {
+        // request selanjutnya → ambil dari token.sub
+        console.log("🔄 JWT Token on subsequent request:", {
+          id: token.id, // pakai token.id sesuai tipe token
+          email: token.email,
+          role: token.role,
+          name: token.name,
+        });
       }
       return token;
     },
+
     async session({ session, token }) {
-      if (token) {
-        session.user.role = token.role as string;   // ✅ lempar role ke session
+      if (session.user) {
+        session.user.role = token.role as string;
         session.user.name = token.name as string;
         session.user.image = token.image as string;
       }
+
+      console.log("📦 Session object sent to client:", session);
+
       return session;
     },
   },
-
   events: {
     async createUser(message) {
+      // User otomatis dibuat oleh PrismaAdapter, jadi tidak perlu prisma.user.create lagi
+      console.log("🆕 New user created:", message.user);
 
-      // Optionally, you can remove this call if not needed, or provide valid 'data' if you intend to create a user here.
-      await prisma.user.create({
-        data: {
-          createdAt: new Date
-        }
-      }),
-      // message.user = user baru yang dibuat
       await prisma.membership.create({
         data: {
-          userId: message.user.id, // relasi ke User
-          id: message.user.id, // ID yang sama dengan User
+          userId: message.user.id,
+          id: message.user.id,
           startDate: "-",
           endDate: "-",
           status: "nonactive",
@@ -119,7 +126,6 @@ export const authOptions: AuthOptions = {
       });
     },
   },
-
 };
 
 const handler = NextAuth(authOptions);
