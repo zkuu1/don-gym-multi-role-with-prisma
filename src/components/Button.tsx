@@ -8,6 +8,17 @@ import { ToastContainer, toast } from "react-toastify";
 import { signOut } from "next-auth/react";
 import "react-toastify/dist/ReactToastify.css";
 
+export const Backbutton = () => {
+  return (
+   <Link
+      href="/admin"
+      className="inline-flex items-center space-x-1 text-white bg-base_purple hover:bg-base_semi_purple px-5 py-[9px] rounded-lg text-sm"
+   >
+    Back
+   </Link>
+  )
+}
+
 export const LogoutButton = () => {
     return (
       <button onClick={() => signOut()} className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded">Logout Account</button>

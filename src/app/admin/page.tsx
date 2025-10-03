@@ -16,7 +16,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 
 const AdminPage = async () => {
-  const session = await getServerSession(authOptions);
+const session = await getServerSession(authOptions);
 
   /**
    * 🔹 Hitung Customer Growth
@@ -140,7 +140,7 @@ const AdminPage = async () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+      {/* Sidebar
       <div className="w-64 bg-white shadow-md">
         <div className="p-4 border-b">
           <h1 className="text-2xl font-bold text-gray-800">Don Gym Admin</h1>
@@ -228,7 +228,7 @@ const AdminPage = async () => {
             </ul>
           </div>
         </nav>
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
@@ -236,11 +236,8 @@ const AdminPage = async () => {
           {/* Welcome */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-800">
-              Welcome back, {session?.user?.name || "Admin"}!
+              Admin Dashboard
             </h1>
-            <p className="text-gray-600">
-              Here's what's happening with your business today.
-            </p>
           </div>
 
           {/* Stats */}

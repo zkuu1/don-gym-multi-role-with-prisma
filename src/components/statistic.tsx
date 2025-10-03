@@ -37,10 +37,13 @@ const Statistic = async ({ searchParams }: { searchParams: { query?: string } })
     <div className="bg-white rounded-lg shadow-sm overflow-hidden">
       {/* Header */}
       <div className="p-6 border-b">
-        <h1 className="text-lg font-semibold text-gray-800">User Statistics</h1>
-        <p className="text-sm text-gray-500">
-          Overview of registered users and memberships
-        </p>
+        {/* <h1 className="text-lg font-semibold text-gray-800">User Statistics</h1> */}
+        <h1 className="text-2xl font-bold text-gray-800">
+              Welcome back, {session?.user?.name || "Admin"}!
+            </h1>
+             <p className="text-gray-600">
+              Here's what's happening with your business today.
+            </p>
         <div className="mt-4">
           <CreateButton />
         </div>

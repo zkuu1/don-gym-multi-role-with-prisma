@@ -112,13 +112,13 @@ const equipmentItems = [
     name: "High row machine",
     description: "Non-slip premium mat",
      image: Treadmill,
-  // Add more items as needed
+
   }
 ];
 
 export default function FitnessEquipment() {
   return (
-    <section className="py-20 bg-black">
+    <section className="py-32 bg-black">
       <motion.div
         className="container mx-auto px-4"
         initial="hidden"
@@ -148,9 +148,10 @@ export default function FitnessEquipment() {
 
         {/* Animated Equipment Grid */}
         <motion.div
-          className="relative border-2 border-base_purple rounded-xl p-6 shadow-lg"
+          className="relative border-2 border-base_purple rounded-xl p-6 shadow-lg max-w-6xl mx-auto"
           variants={itemVariants}
-        >
+          >
+
           {/* Purple glow effect */}
           <div className="absolute inset-0 rounded-xl ring-4 ring-base_purple/30 ring-inset pointer-events-none" />
 
