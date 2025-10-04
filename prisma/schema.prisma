@@ -66,3 +66,15 @@ model Membership {
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model Absensi {
+  
+  id         Int      @id @default(autoincrement())
+  name       String
+  no_member  String?   
+  status_kunjungan String    
+  tanggal_kunjungan    DateTime  @default(now())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  
+}
